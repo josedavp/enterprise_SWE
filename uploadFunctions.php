@@ -2,10 +2,10 @@
 
 function db_connect($db)
 {
-	$hostname="hostname here";
+    $hostname="hostname here";
     $username="username here";
     $password="password here";
-    //$db="docStorage";
+   
     $dblink=new mysqli($hostname,$username,$password,$db);
     if (mysqli_connect_errno())
     {
