@@ -33,7 +33,6 @@ function createAPISession() {
 		echo "\r\nSession Created SuccessfulLy!\r\n";
 		echo "SID $sid\r\n";
 		echo "Create Session Execution Time: $execution_time\r\n";
-		//ALSO MAYBE INSIDE OR OUTSIDE IN ANOTHER FILE CALL QUERY RETREIVE?
 		return $sid;
 	}
 	else if ($cinfo[0]=="Status: ERROR" && $cinfo[1]=="MSG: Previous Session Found") { // ["Status: ERROR","MSG: Previous Session Found","Action: Must clear session first"]
@@ -76,8 +75,6 @@ function createAPISession() {
 		$status= $errorTMP[1];
 		errorLog($sid, $status, 'ELSE: api_CREATE_SESSION', $dblink);
 		getClearSession($sid,$dblink);
-		//do I need a return statement?
-		//return 'Error';
 	}
 
 }
