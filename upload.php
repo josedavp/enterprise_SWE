@@ -42,7 +42,7 @@ echo '</div>';//end panel-body
 echo '</div>';//end page-inner
 if (isset($_POST['submit']))
 {
-   	$hostname="hostname here";
+    $hostname="hostname here";
     $username="username here";
     $password="password here";
     $db="database name here";
@@ -60,7 +60,7 @@ if (isset($_POST['submit']))
 	$tmpName=$_FILES['userfile']['tmp_name'];
 	$fileSize=$_FILES['userfile']['size'];
 	$fileType=$_FILES['userfile']['type'];
-    //$path="/var/www/html/uploads/";
+  
 	$fp=fopen($tmpName, 'r');
 	$content=fread($fp, filesize($tmpName));
 	fclose($fp);
@@ -68,10 +68,6 @@ if (isset($_POST['submit']))
 	$sql="Insert into `uploadDocuments` (`name`,`upload_by`,`upload_date`,`status`,`file_type`,`content`) values ('$fileName','$uploadBy','$uploadDate','active','$docType','$contentsClean');";
 	$dblink->query($sql) or
 		die("Something went wrong with $sql<br>".$dblink->error);
-	//$fp=fopen($path.$fileName,"wb") or
-	//	die("Could not open $path$fileName for writing");
-	//fwrite($fp,$content);
-	//fclose($fp);
 	header("Location: https://ec2 url here.compute.amazonaws.com/upload.php?msg=success");
 }
 ?>
