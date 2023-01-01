@@ -125,11 +125,7 @@ function getMissingDocuments($sid,$fileName,$uploadBy,$uploadDate,$status,$conte
 		else {
 			//echo "SID Already in QUERY";
 		}
-		/*
-		$sql="Insert into `file_queries` (`session_id`,`status`,`file_amount`,`msg`,`action`,`accountNum`) values ('$sid','$status','$file_amount','None','$actionInfo','$accountID')";
-		$dblink->query($sql) or
-			die("Something went wrong with $sql<br>".$dblink->error);
-		*/
+	
 	}
 
 
@@ -201,19 +197,9 @@ function queryFileData($sid, $value, $cinfo,$file, $files,$contentsClean, $dblin
 
 	
 	//***************CORRECT DATA**************//
-	//echo "INSIDE FILE: $file \r\n";
 	$fileName = str_replace(" ","_",$file);
-	//$fileName=$uploadDName.$fileName;
-	//$docType="pdf";
-	//echo "\r\nFILENAME: $file\r\n";
-	
-	//echo "\r\nINSIDE QUERYFILE FUNCTION\r\n";
-	//echo "FILE: $file \r\n";
-	//echo "FILES: " . count($files) . "\r\n";
+
 	$file_amount = count($files);
-	//echo "FILENAME: $fileName DOCTYPE: $docType ";
-	//echo " ";
-	
 	$tmp=explode("-",$file); //seperates by - into elements
 	$accountID=$tmp[0];
 	$titleID=$tmp[1];
@@ -226,7 +212,6 @@ function queryFileData($sid, $value, $cinfo,$file, $files,$contentsClean, $dblin
 		$userMSG = $fileName;
 		errorLog($sid, $status,$userMSG, $dblink);
 	}
-	
 	//echo "\r\nInside API QUERY FILE; ACCTID: $accountID TitleID: $titleID datIDTMP: $dateIDTMP\r\n";
 	$tmp=explode(".",$dateIDTMP); //seperates last part by . into date and .pdf filetype; elements
 	$dateID = $tmp[0];
@@ -251,7 +236,7 @@ function queryFileData($sid, $value, $cinfo,$file, $files,$contentsClean, $dblin
 	
 	//***************ABOVE CORRECT DATA**************//
 	$uploadBy = 'cronjob';
-	//**************************BELOW MODIFY, maybe in its own each? or all in one other function?************************//
+	//**************************Organizes Data for DataBase************************//
 	getSession($sid, $uploadBy, $status, $dblink);
 	getDocuments ($sid,$fileName,$uploadDate,$uploadBy,$status,$fileType,$contentsClean,$titleID,$accountID, $dblink);
  	getQueryTable ($sid, $status, $file_amount, $actionInfo, $accountID,$uploadBy, $dblink);
