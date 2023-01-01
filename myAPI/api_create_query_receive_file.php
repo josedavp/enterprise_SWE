@@ -1,14 +1,10 @@
 <?php
-//work on this first
-//create query first
-//then next file pass data into DB
 include_once("apiFunctions.php");
 require("api_query_file.php");
 
 function createAPIQuery($sid) {
 	//**************************DB CONNECTION******************************//
 	$dblink=db_connect("db name here"); 
-	
 	//****************************** USER iNFO *****************************//
 	$username="username here";
 	$password="password here";
@@ -61,11 +57,8 @@ function createAPIQuery($sid) {
 				//******************************WHERE YOU REQUEST THE FILE DATA***********************************//
 				$tmp=explode("/",$value);
 				
-				if (isset($tmp[4])) {
-					//could validate in small if statement if its unqiue or not?
-					
+				if (isset($tmp[4])) {	
 					$file=$tmp[4];
-
 					echo "\r\nFile: $file\r\n";
 					$data="sid=$sid&uid=$username&fid=$file";
 					$ch=curl_init('https://url here.com/api/request_file');
