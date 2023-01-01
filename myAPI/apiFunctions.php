@@ -4,7 +4,7 @@ function db_connect($db)
 	$hostname=" host name here";
     $username=" user name here";
     $password="password here";
-    //$db="docStorage";
+	
     $dblink=new mysqli($hostname,$username,$password,$db);
     if (mysqli_connect_errno())
     {
@@ -54,8 +54,6 @@ function getClearSession ($sid,$dblink)
 	$execution_time = ($time_end - $time_start)/60;
 	curl_close($ch);
 	
-	//update active session to close on DB under session// add extra function here or just do it work here?
-	////$sql="UPDATE `sessions` SET `active` = '$active' WHERE `sid` != '$sid'";
 	$sql="UPDATE `sessions` SET `active` = '1' WHERE `sid` = '$sid'";
 	$dblink->query($sql) or
 		die("Something went wrong with $sql<br>".$dblink->error);
