@@ -28,21 +28,6 @@ while ($data=$result->fetch_array(MYSQLI_ASSOC))
 	$num += 1;
 }
 echo '<div ><h3>&nbsp&nbsp Total Unique Loans Generated: '.$num.'</h3></div>';
-/**************************check this one with number 3 for documents generated************************************************/
-/*
-$sql="SELECT * from `documents` where `upload_by`='cronjob'";// where `user_id`='cronjobs'";
-$result=$dblink->query($sql) or
-	die("Something went wrong with: $sql<br>".$dblink->error);
-$loanArray=array();
-echo '<br><div><h2>&nbsp&nbsp Documents: </h2></div>';
-$num = 0;
-while ($data=$result->fetch_array(MYSQLI_ASSOC))
-{
-	echo '<div><h4>&nbsp&nbsp '.$data['name'].'</h4></div>';
-	$num += 1;
-}
-echo '<div><h3>&nbsp&nbsp Total Documents Generated: '.$num.'</h3></div>';
-*/
 /****
 * 	Question 2
 ***********/
@@ -127,23 +112,19 @@ while ($data=$result->fetch_array(MYSQLI_ASSOC))
 	$num++;
 }
 /**********************JUST NEED DOCUMENTS WITH TITLE NAME AND ACCOUNT NUMS AND TITLE ARRAY*********************************/
-//NESTED WHILE LOOP
-//LOOP THROUGH ACCOUNT NUMBERS AND CHECK IF THEY CONTAIN ALL 8 TITLES, IF ANY ARE THEN SUBTRACT THEM
-// if empty then your good else get missing document left
 $sql= "SELECT DISTINCT `account_id` FROM `documents`;"; //THIS GETS UNIQUE ACCT IDS
 $result=$dblink->query($sql) or
 	die("Something went wrong with: $sql<br>".$dblink->error);
-//echo '<div><h3>Missing Documents: </h3></div>';
+
 $accountArray = array();
 $titleNameArray = array();
 $titleCheckArray = array();
 $missingDocumentArray = array();
 $successfulDocumentArray = array();
-//$tmpArray = array();
+
 while ($data=$result->fetch_array(MYSQLI_ASSOC)) //this goes through row by row  by each account_ID
 {
 	$num = 0;// RESETS IT
-	//$accountArray[$num] = $data['account_id'];
 	$name = $data['account_id'];
 	$tmpArray = [];
 	/********************SQL QUERY FOR TITLE NAME MOSTLY***************************/
@@ -151,7 +132,6 @@ while ($data=$result->fetch_array(MYSQLI_ASSOC)) //this goes through row by row 
 	$result2=$dblink->query($sql2) or
 		die("Something went wrong with: $sql<br>".$dblink->error);
 	/***********************************************/
-	//echo  $accountArray[$num];
 	while ($data2=$result2->fetch_array(MYSQLI_ASSOC)) //this goes through row by row  by each account_ID
 	{
 		$titleCheckArray = $titleListArray;// PASSES ARRAY FOR FUTURE VERIFICATION
@@ -160,15 +140,9 @@ while ($data=$result->fetch_array(MYSQLI_ASSOC)) //this goes through row by row 
 		array_push($tmpArray, $titleName);
 		$num++;
 	}
-	//AFTER GOING INSIDE INNER WHILE LOOP AND CHECKING ACCT ID INFO IT GOES TO VERIFY CONTENTS AS SHOWN BELOW
-	//echo $titleListArray;
-	//echo $titleCheckArray;
 	$missingDocumentArray = array_diff($titleListArray, $tmpArray);
-	//echo 'OK: '. $missingDocumentArray;
 	if (!empty($missingDocumentArray)) {
 		$loanNames = implode(",", $missingDocumentArray);
-		//echo 'HERE: '. $loanNames;
-		//CLOSE BUT NOT WORKING YET
 		echo '<div>&nbsp&nbsp&nbsp&nbspLoan Number: ' .$data['account_id'] . '&nbsp&nbsp&nbsp&nbspDocuments Missing:    '.$loanNames.'</div>';
 	}
 	else {
@@ -179,22 +153,20 @@ while ($data=$result->fetch_array(MYSQLI_ASSOC)) //this goes through row by row 
 /*******
 * //PART 2
 ********/
-//IS PART 2 LOGIC CORRECT IN END?
 echo '<div><h3>&nbsp&nbsp 4.2) Completed Documents: </h3></div>';
 $sql= "SELECT DISTINCT `account_id` FROM `documents`;"; //THIS GETS UNIQUE ACCT IDS
 $result=$dblink->query($sql) or
 	die("Something went wrong with: $sql<br>".$dblink->error);
-//echo '<div><h3>Missing Documents: </h3></div>';
+
 $accountArray = array();
 $titleNameArray = array();
 $titleCheckArray = array();
 $missingDocumentArray = array();
 $successfulDocumentArray = array();
-//$tmpArray = array();
+
 while ($data=$result->fetch_array(MYSQLI_ASSOC)) //this goes through row by row  by each account_ID
 {
 	$num = 0;// RESETS IT
-	//$accountArray[$num] = $data['account_id'];
 	$name = $data['account_id'];
 	$tmpArray = [];
 	/********************SQL QUERY FOR TITLE NAME MOSTLY***************************/
@@ -202,7 +174,6 @@ while ($data=$result->fetch_array(MYSQLI_ASSOC)) //this goes through row by row 
 	$result2=$dblink->query($sql2) or
 		die("Something went wrong with: $sql<br>".$dblink->error);
 	/***********************************************/
-	//echo  $accountArray[$num];
 	while ($data2=$result2->fetch_array(MYSQLI_ASSOC)) //this goes through row by row  by each account_ID
 	{
 		$titleCheckArray = $titleListArray;// PASSES ARRAY FOR FUTURE VERIFICATION
@@ -211,20 +182,12 @@ while ($data=$result->fetch_array(MYSQLI_ASSOC)) //this goes through row by row 
 		array_push($tmpArray, $titleName);
 		$num++;
 	}
-	//AFTER GOING INSIDE INNER WHILE LOOP AND CHECKING ACCT ID INFO IT GOES TO VERIFY CONTENTS AS SHOWN BELOW
-	//echo $titleListArray;
-	//echo $titleCheckArray;
 	$missingDocumentArray = array_diff($titleListArray, $tmpArray);
-	//echo 'OK: '. $missingDocumentArray;
 	if (empty($missingDocumentArray)) { //IF EMPTY THEN THEY SHOULD HAVE ALL MATCHED?????
-		//$loanNames = implode(",", $missingDocumentArray);
-		//echo 'HERE: '. $loanNames;
-		//CLOSE BUT NOT WORKING YET
 		echo '<div>&nbsp&nbsp Successful Loan Numbers:   </div>'; //data2 or $data since $data has the value your looking for? 
 		echo '<div>&nbsp&nbsp ' .$data['account_id'] . '</div>'; // not sure if it matters
 	}
-	else {//is this correct?
-        //echo 'None';
+	else {
 		//echo 'ELSE HERE: '. $loanNames;
 		//echo '<div> Loan Number:   ' .$data['account_id'] . '     Documents Missing:    '.$loanNames.'</div>';
 	}
@@ -249,13 +212,11 @@ while ($data=$result->fetch_array(MYSQLI_ASSOC))
 $sql= "SELECT `title_name` FROM `documents`;"; //THIS GETS UNIQUE ACCT IDS
 $result=$dblink->query($sql) or
 	die("Something went wrong with: $sql<br>".$dblink->error);
-//echo '<div><h3>Missing Documents: </h3></div>';
 $countTitleArray = array();
 for ($i = 0; $i < count($titleListArray); $i++)
 {
 	$countTitleArray[$i] = 0; //sets all values to 0 first
 }
-// can do it this way increase count in array 0-8. with a for loop make all 8 elements in array to 0; then go to them.
 while ($data=$result->fetch_array(MYSQLI_ASSOC)) //this goes through row by row of titles in documents and tallys them up
 {
 	for ($j = 0; $j < count($titleListArray); $j++) {
@@ -264,11 +225,9 @@ while ($data=$result->fetch_array(MYSQLI_ASSOC)) //this goes through row by row 
 			//verify order of titles in list and how its being pulled to. 
 		}//NOT DONE YET AND STILL NEED TO ECHO IT
 	}
-}//IN THE END ALSO EXPLAIN TO PROF ABOUT DATA AND MISSING DATA AND WHY 
-//EXPLAIN WHAT YOU LEARNED AND HAD TO CHANGE, YOUR MISTAKES AS WELL AND WHEN IT OCCURED AND WHAT YOU DID TO FIX IT
-//ALSO TURN IN ASSIGNMENT 4 WITH NEW DATA AGAIN AND TURN OFF CRONJOB  AFTER NOV 30TH
+}
 
-for ($k=0; $k < count($countTitleArray); $k++) { //NEEDS TO DISPLAY DATA FOR EACH TITLE//NOT DONE MAYBE? just verify later
+for ($k=0; $k < count($countTitleArray); $k++) { //DISPLAY DATA 
 	echo '<div>&nbsp&nbsp&nbsp&nbspTotal Number of '. $titleListArray[$k] .':&nbsp'. $countTitleArray[$k] . '</div>';
 }
 /***********************************/
@@ -276,12 +235,7 @@ for ($k=0; $k < count($countTitleArray); $k++) { //NEEDS TO DISPLAY DATA FOR EAC
 echo '<br><div><b>&nbsp&nbsp REASON FOR DATA INCONSISTENCIES:  </b></div>';
 echo '<div>&nbsp&nbsp Data had multiple bugs initially on Nov 14-15th. Nov 23, 26, 29th in the documents and file_query table. Along with syntax errors and a incorrect cronjob execution (Had to change it twice from incorrect time and day). Which prevented the data from being properly added into the DataBase. But from changing my SQL Query, adding/correcting if statements to prevent duplicates (I had an error in my file_query function), running multiple times separate requests using my \'abc123\', echoing out the data and creating functions to extract the data I needed. I was able to debug most errors and modify my database to become more efficient. As of now I still have a few else statements with echos, but they are simply temporary methods of seeing what is being outputted such as past (hopefully) unintentional duplicates in the Query File or Document Function. I also realized having a few more tables would make my system more rebust by compartmentalizing error logs, missing/duplicate files, and other forms of data for better readability and data extraction. This assignment made me think greatly on the structure of my DataBase and its ability to get, process, and display the data I need. Each day a request was made, I saw faults that I did not expect to see when I manually requested files. But I was able to correct most of them through trial and error. I also had to speed up and create brand new cron jobs (mostly for the last two days) in order to meet and exceed the minimum data amount required. But my system seems to be fine with the changes made. Question 4, Part 2 has the code needed to search and display the successful loan numbers but I have not received one as of yet with my current queries. I did my best though! </div>';
 /*********************************/
-//$sql= 
-	//"SELECT DISTINCT `file_amount` , b.`account_id` as loan_num  FROM `file_queries` b   LEFT JOIN `documents` f ON f.`account_id` = b.`account_id`";// where `documents.upload_by`='cronjob'";
-/*
-//INCLUDES TITLE NAME
-SELECT DISTINCT `title_name`,`file_amount` , b.`account_id` as loan_num FROM `file_queries` b LEFT JOIN `documents` f ON f.`account_id` = b.`account_id`;
-*/
+
 /*
 $result=$dblink->query($sql) or
 	die("Something went wrong with: $sql<br>".$dblink->error);
