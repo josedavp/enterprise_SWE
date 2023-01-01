@@ -2,7 +2,6 @@
 include_once("apiFunctions.php");
 function closeAPISession($sid) {// PASSES SESSION ID TO CLOSE SESSION
 	//**************************DB CONNECTION******************************//
-	
 	$dblink=db_connect("database name here"); 
 	//****************************** USER iNFO *****************************//
 	$username="username here";
